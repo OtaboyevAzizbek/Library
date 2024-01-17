@@ -29,6 +29,11 @@ public class MainPageController {
     @Autowired
     BookService bookService;
 
+    @GetMapping("/main")
+    public String mainPage(){
+        return "This is a home page!";
+    }
+
     @PostMapping("/create_language")
     public void createLanguage(@RequestParam("name") String name){
         languageService.createLanguage(Language.builder().languageName(name).build());
