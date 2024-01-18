@@ -8,10 +8,15 @@ import com.library.LibraryService.AuthorService;
 import com.library.LibraryService.BookService;
 import com.library.LibraryService.CategoryService;
 import com.library.LibraryService.LanguageService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/library")
@@ -27,11 +32,14 @@ public class MainPageController {
     AuthorService authorService;
 
     @Autowired
+    ReloadableResourceBundleMessageSource messageSource;
+    @Autowired
     BookService bookService;
 
     @GetMapping("/main")
-    public String mainPage(){
-        return "This is a home page!";
+    public ModelAndView mainPage(){
+        ModelAndView modelAndView = new ModelAndView("dashboard");
+        return modelAndView;
     }
 
     @PostMapping("/create_language")

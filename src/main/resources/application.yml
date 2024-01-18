@@ -10,5 +10,5 @@ spring:
     locations: classpath:db/migration
   mvc:
     view:
-      prefix: /view/
+      prefix: /views/
       suffix: .jsp
