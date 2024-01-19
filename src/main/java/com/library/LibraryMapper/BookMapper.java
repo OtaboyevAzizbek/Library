@@ -12,6 +12,6 @@ import java.sql.SQLException;
 public class BookMapper implements RowMapper<Book> {
     @Override
     public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new Book(rs.getInt("book_id"),rs.getString("title"), Author.builder().lastName(rs.getString("last_name")).firstName(rs.getString("first_name")).build(), Category.builder().categoryName(rs.getString("category_name")).build(),rs.getString("published_year"), Language.builder().languageName(rs.getString("language_name")).build());
+        return new Book(rs.getInt("book_id"),rs.getString("title"), Author.builder().authorId(rs.getInt("author_id")).lastName(rs.getString("last_name")).firstName(rs.getString("first_name")).build(), Category.builder().categoryId(rs.getInt("category_id")).categoryName(rs.getString("category_name")).build(),rs.getString("published_year"), Language.builder().languageId(rs.getInt("language_id")).languageName(rs.getString("language_name")).build());
     }
 }

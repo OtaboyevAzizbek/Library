@@ -21,7 +21,7 @@ public class BookDaoImp implements BookDao{
 
     @Override
     public Book getBookById(int bookId) {
-        return jdbcTemplate.queryForObject("SELECT book_id,title,last_name,first_name,category_name,published_year,language_name FROM book b LEFT JOIN author a on b.author_id = a.author_id LEFT JOIN category c on b.category_id = c.category_id LEFT JOIN language l on b.language_id = l.language_id WHERE book_id=?;",new Object[]{bookId},new BookMapper());
+        return jdbcTemplate.queryForObject("SELECT book_id,title,a.author_id,last_name,first_name,c.category_id,category_name,published_year,l.language_id,language_name FROM book b LEFT JOIN author a on b.author_id = a.author_id LEFT JOIN category c on b.category_id = c.category_id LEFT JOIN language l on b.language_id = l.language_id WHERE book_id=?;",new Object[]{bookId},new BookMapper());
     }
 
     @Override
@@ -36,6 +36,6 @@ public class BookDaoImp implements BookDao{
 
     @Override
     public List<Book> getBookList() {
-        return jdbcTemplate.query("SELECT book_id,title,last_name,first_name,category_name,published_year,language_name FROM book b LEFT JOIN author a on b.author_id = a.author_id LEFT JOIN category c on b.category_id = c.category_id LEFT JOIN language l on b.language_id = l.language_id;",new BookMapper());
+        return jdbcTemplate.query("SELECT book_id,title,a.author_id,last_name,first_name,c.category_id,category_name,published_year,l.language_id,language_name FROM book b LEFT JOIN author a on b.author_id = a.author_id LEFT JOIN category c on b.category_id = c.category_id LEFT JOIN language l on b.language_id = l.language_id;",new BookMapper());
     }
 }

@@ -8,15 +8,12 @@ import com.library.LibraryService.AuthorService;
 import com.library.LibraryService.BookService;
 import com.library.LibraryService.CategoryService;
 import com.library.LibraryService.LanguageService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.Locale;
 
 @RestController
 @RequestMapping("/library")
@@ -39,6 +36,10 @@ public class MainPageController {
     @GetMapping("/main")
     public ModelAndView mainPage(){
         ModelAndView modelAndView = new ModelAndView("dashboard");
+        modelAndView.addObject("bookList",bookService.getBookList());
+        modelAndView.addObject("authorList",authorService.getAuthorList());
+        modelAndView.addObject("categoryList",categoryService.getCategoryList());
+        modelAndView.addObject("languageList",languageService.getLanguageList());
         return modelAndView;
     }
 
@@ -118,8 +119,9 @@ public class MainPageController {
     }
 
     @PostMapping("/create_book")
-    public void createBook(@RequestParam("title") String title,@RequestParam("authorId") int authorId,@RequestParam("categoryId") int categoryId,@RequestParam("year") String year,@RequestParam("languageId") int languageId){
+    public ModelAndView createBook(@RequestParam("title") String title,@RequestParam("authorId") int authorId,@RequestParam("categoryId") int categoryId,@RequestParam("year") String year,@RequestParam("languageId") int languageId){
         bookService.createBook(Book.builder().title(title).author(Author.builder().authorId(authorId).build()).category(Category.builder().categoryId(categoryId).build()).year(year).language(Language.builder().languageId(languageId).build()).build());
+        return new ModelAndView("redirect:/library/main");
     }
 
     @GetMapping("/view_book")
@@ -128,17 +130,19 @@ public class MainPageController {
     }
 
     @PostMapping("update_book")
-    public void updateBook(@RequestParam("bookId") int bookId,@RequestParam("title") String title,@RequestParam("authorId") int authorId,@RequestParam("categoryId") int categoryId,@RequestParam("year") String year,@RequestParam("languageId") int languageId){
+    public ModelAndView updateBook(@RequestParam("bookId") int bookId,@RequestParam("title") String title,@RequestParam("authorId") int authorId,@RequestParam("categoryId") int categoryId,@RequestParam("year") String year,@RequestParam("languageId") int languageId){
         bookService.updateBookById(new Book(bookId,title,Author.builder().authorId(authorId).build(),Category.builder().categoryId(categoryId).build(),year,Language.builder().languageId(languageId).build()));
+        return new ModelAndView("redirect:/library/main");
     }
 
-    @GetMapping("/delete_book")
-    public void deleteBook(@RequestParam("bookId") int bookId){
+    @GetMapping("/delete_book/{bookId}")
+    public ModelAndView deleteBook(@PathVariable("bookId") int bookId){
         bookService.deleteBookById(bookId);
+        return new ModelAndView("redirect:/library/main");
     }
 
     @GetMapping("/view_bookList")
-    public List<Book> viewBookList(){
-        return bookService.getBookList();
+    public ModelAndView viewBookList(){
+        return new ModelAndView("redirect:/library/main");
     }
 }
